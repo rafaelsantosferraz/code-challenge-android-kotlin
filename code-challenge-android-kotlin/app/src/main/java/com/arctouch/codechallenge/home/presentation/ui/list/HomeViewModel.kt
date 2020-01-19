@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     fun onSearch(text: String){
         newState(currentState().copy(isLoading = true))
         val previousLoadMovies = state.value?.movies ?: mutableListOf()
-        val filteredMovies = previousLoadMovies.filter { it.title.contains(text) }
+        val filteredMovies = previousLoadMovies.filter { it.title.toLowerCase().contains(text.toLowerCase()) }
         newState(currentState().copy(filteredMovies = filteredMovies.toMutableList(), isLoading = false, isFilter = true))
     }
 
