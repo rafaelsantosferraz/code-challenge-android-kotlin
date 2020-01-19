@@ -1,4 +1,33 @@
 <resources>
     <string name="app_name">Code Challenge</string>
     <string name="movie_and_genres">%s - %s</string>
+
+    <!-- GLOBAL -->
+    <string name="ok">OK</string>
+    <string name="cancel">CANCELAR</string>
+    <string name="required_field">Campo obrigatorio</string>
+    <string name="wrong_data">Dado incorcorreto</string>
+    <string name="password_dontmatch">Senhas não correspondem</string>
+
+    <string-array name="meses">
+        <item>Janeiro</item>
+        <item>Fevereiro</item>
+        <item>Março</item>
+        <item>Abril</item>
+        <item>Maio</item>
+        <item>Junho</item>
+        <item>Julho</item>
+        <item>Agosto</item>
+        <item>Setembro</item>
+        <item>Outubro</item>
+        <item>Novembro</item>
+        <item>Dezembro</item>
+    </string-array>
+
+    <!-- Error -->
+    <string name="error_no_internet">Você está off-line</string>
+    <string name="error_bad_connection">Problemas de conexão</string>
+    <string name="error_session_expired">Sessão expirada</string>
+    <string name="error_precon_failed">Dados incorretos</string>
+    <string name="error_unknown">Ocorreu um error</string>
 </resources>
