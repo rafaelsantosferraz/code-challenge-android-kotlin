@@ -1,11 +1,11 @@
-package com.arctouch.codechallenge.home
+package com.arctouch.codechallenge.home.presentation.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.model.Movie
+import com.arctouch.codechallenge.home.domain.entities.Movie
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
