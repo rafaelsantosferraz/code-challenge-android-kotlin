@@ -3,10 +3,9 @@ package com.arctouch.codechallenge.home.presentation.ui.list
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,10 +44,18 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as AppCompatActivity).supportActionBar!!.show()
+        setHasOptionsMenu(true)
 
         setupObservables()
         setupRecyclerView()
         setupListeners()
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_home, menu)
+        setupSearchView(menu)
     }
 
     override fun onResume() {
@@ -116,6 +123,25 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
 
         moviesRecyclerViewAdapter.setOnItemClickListener{ item, position, view ->  onItemClick(item, position, view) }
     }
+
+    private fun setupSearchView(menu: Menu){
+        val searchView = menu.findItem(R.id.action_main_search)?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {  viewModel.onSearch(query) }
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                query?.let {  viewModel.onSearch(query) }
+                return true
+            }
+        })
+
+        searchView.setOnCloseListener {
+           viewModel.onSearchClose()
+        }
+    }
     // endregion
 
 
@@ -147,9 +173,18 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
                     }
                 }
 
-                part("movies", state.movies) {
-                    if (it != null) {
-                        handleMovies(it)
+
+                if(state.isFilter == true) {
+                    part("filteredMovies", state.filteredMovies) {
+                        if (it != null) {
+                            handleMovies(it)
+                        }
+                    }
+                } else {
+                    part("movies", state.movies) {
+                        if (it != null) {
+                            handleMovies(it)
+                        }
                     }
                 }
             }

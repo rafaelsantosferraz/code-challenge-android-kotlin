@@ -28,6 +28,18 @@ class HomeViewModel @Inject constructor(
     fun onMovieClick(movie: Movie){
         command.value = Command.NavigateToMoviePage(movie)
     }
+
+    fun onSearch(text: String){
+        newState(currentState().copy(isLoading = true))
+        val previousLoadMovies = state.value?.movies ?: mutableListOf()
+        val filteredMovies = previousLoadMovies.filter { it.title.contains(text) }
+        newState(currentState().copy(filteredMovies = filteredMovies.toMutableList(), isLoading = false, isFilter = true))
+    }
+
+    fun onSearchClose(): Boolean{
+        newState(currentState().copy(filteredMovies = mutableListOf(), isFilter = false))
+        return false
+    }
     // endregion
 
 
@@ -43,7 +55,9 @@ class HomeViewModel @Inject constructor(
     data class State(
             val isLoading: Boolean? = false,
             val isLastPage: Boolean? = false,
-            val movies: MutableList<Movie>? = null
+            val isFilter: Boolean? = false,
+            val movies: MutableList<Movie>? = null,
+            val filteredMovies: MutableList<Movie>? = null
     )
 
     sealed class Command {
