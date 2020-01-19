@@ -2,6 +2,7 @@ package com.arctouch.codechallenge.base.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import com.arctouch.codechallenge.home.presentation.network.TmdbApi
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -14,6 +15,7 @@ abstract class BaseActivity : AppCompatActivity() {
         .client(OkHttpClient.Builder().build())
         .addConverterFactory(MoshiConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
         .create(TmdbApi::class.java)
 }
