@@ -22,7 +22,7 @@ interface TmdbApi {
     fun genres(
         @Query("api_key") apiKey: String,
         @Query("language") language: String
-    ): Observable<GenreResponse>
+    ): Deferred<GenreResponse>
 
     @GET("movie/upcoming")
     fun upcomingMovies(

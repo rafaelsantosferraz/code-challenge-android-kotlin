@@ -18,6 +18,13 @@ class HomeViewModel @Inject constructor(
 
 
 
+    fun getGenres(){
+        newState(currentState().copy(isLoading = true))
+        addJob(launch(exceptionHandler) {
+            newState(currentState().copy(movies = moviesInteractor.getMoviesAsync().await(), isLoading = false))
+        })
+    }
+
     fun getUpcomingMovies(){
         newState(currentState().copy(isLoading = true))
         addJob(launch(exceptionHandler) {

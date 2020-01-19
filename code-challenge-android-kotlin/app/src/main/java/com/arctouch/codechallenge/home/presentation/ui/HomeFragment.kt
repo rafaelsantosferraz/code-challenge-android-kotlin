@@ -46,7 +46,16 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getUpcomingMovies()
+
+        viewModel.state.value?.movies.let {
+            if(it.isNullOrEmpty()) {
+                viewModel.getUpcomingMovies()
+            }
+            else {
+                handleMovies(it)
+                showLoadingView(false)
+            }
+        }
     }
 
     override fun onDestroyView() {
