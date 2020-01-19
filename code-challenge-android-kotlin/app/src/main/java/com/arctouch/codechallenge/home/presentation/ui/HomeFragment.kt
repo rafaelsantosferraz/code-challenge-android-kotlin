@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.arctouch.codechallenge.R
+import com.arctouch.codechallenge.base.di.Injectable
+import com.arctouch.codechallenge.base.presentation.ui.BaseViewModelFragment
 import com.arctouch.codechallenge.home.data.datasources.Cache
 import com.arctouch.codechallenge.home.presentation.network.TmdbApi
 import com.arctouch.codechallenge.home.presentation.ui.adapter.HomeAdapter
@@ -17,9 +19,10 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import kotlin.reflect.KClass
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_home, container, false)
@@ -47,4 +50,6 @@ class HomeFragment : Fragment() {
                 }
     }
 
+    // BaseViewModelFragment -----------------------------------------------------------------------
+    override fun getViewModel(): KClass<HomeViewModel> = HomeViewModel::class
 }
