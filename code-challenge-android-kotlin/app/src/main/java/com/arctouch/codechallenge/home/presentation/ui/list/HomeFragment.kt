@@ -1,4 +1,4 @@
-package com.arctouch.codechallenge.home.presentation.ui
+package com.arctouch.codechallenge.home.presentation.ui.list
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -6,9 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arctouch.codechallenge.R
@@ -42,6 +41,8 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity).supportActionBar!!.show()
 
         setupObservables()
         setupRecyclerView()
@@ -123,8 +124,8 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
         }
     }
 
-    private fun onItemClick(item: Movie, position: Int, view: View){
-
+    private fun onItemClick(movie: Movie, position: Int, view: View){
+        viewModel.onMovieClick(movie)
     }
     //endregion
 
@@ -163,6 +164,7 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
         command.let {
             when (command) {
                 is HomeViewModel.Command.Error -> handleError(command.throwable)
+                is HomeViewModel.Command.NavigateToMoviePage -> handleNavigateToMoviePage(command.movie)
             }
         }
     }
@@ -181,6 +183,10 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
             else -> showDialog(R.string.error_unknown)
         }
         Log.e(TAG, "exception: ", throwable)
+    }
+
+    private fun handleNavigateToMoviePage(movie: Movie) {
+        navigateTo(HomeFragmentDirections.actionHomeFragmentToMovieFragment(movie))
     }
     // endregion
 }

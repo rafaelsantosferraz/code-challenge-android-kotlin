@@ -34,6 +34,7 @@ class HomeAdapter : BaseListAdapter<Movie>() {
                         .load(posterPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
                         .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))
                         .into(view.posterImageView)
+
                 view.setOnClickListener { onItemClickListener?.onItemClick(this, position, view) }
             }
         }

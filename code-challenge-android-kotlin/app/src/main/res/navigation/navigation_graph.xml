@@ -5,6 +5,18 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.arctouch.codechallenge.home.presentation.ui.HomeFragment"
-        android:label="HomeFragment" />
+        android:name="com.arctouch.codechallenge.home.presentation.ui.list.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_movieFragment"
+            app:destination="@id/movieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="com.arctouch.codechallenge.home.presentation.ui.movie.MovieFragment"
+        android:label="MovieFragment" >
+        <argument
+            android:name="movie"
+            app:argType="com.arctouch.codechallenge.home.domain.entities.Movie" />
+    </fragment>
 </navigation>
