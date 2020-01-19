@@ -71,11 +71,6 @@ abstract class BaseViewModel<S, C> : ViewModel(), CoroutineScope {
         jobs.forEach { it.cancel() }
         simultaneousJobs = 0
     }
-
-    interface BaseCommand{
-
-
-    }
     //endregion
 }
 

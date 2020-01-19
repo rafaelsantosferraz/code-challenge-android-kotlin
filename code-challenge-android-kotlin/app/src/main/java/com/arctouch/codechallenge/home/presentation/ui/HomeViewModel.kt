@@ -5,8 +5,6 @@ import com.arctouch.codechallenge.home.domain.entities.Movie
 import com.arctouch.codechallenge.home.domain.interactors.MoviesInteractor
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -17,18 +15,12 @@ class HomeViewModel @Inject constructor(
     override fun initialState() = State()
 
 
-
-    fun getGenres(){
-        newState(currentState().copy(isLoading = true))
-        addJob(launch(exceptionHandler) {
-            newState(currentState().copy(movies = moviesInteractor.getMoviesAsync().await(), isLoading = false))
-        })
-    }
-
     fun getUpcomingMovies(){
         newState(currentState().copy(isLoading = true))
         addJob(launch(exceptionHandler) {
-            newState(currentState().copy(movies = moviesInteractor.getMoviesAsync().await(), isLoading = false))
+            val movies = state.value?.movies ?: mutableListOf()
+            movies.addAll(moviesInteractor.getMoviesAsync(movies).await())
+            newState(currentState().copy(movies = movies, isLoading = false, isLastPage = moviesInteractor.isLastPage))
         })
     }
     // endregion
@@ -43,8 +35,9 @@ class HomeViewModel @Inject constructor(
     }
 
     data class State(
-            val isLoading: Boolean? = null,
-            val movies: List<Movie>? = null
+            val isLoading: Boolean? = false,
+            val isLastPage: Boolean? = false,
+            val movies: MutableList<Movie>? = null
     )
 
     sealed class Command {

@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.base.di.Injectable
 import com.arctouch.codechallenge.base.presentation.ui.BaseViewModelFragment
@@ -27,7 +30,7 @@ import kotlin.reflect.KClass
 
 class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
 
-    private val moviesRecyclerViewAdapter by lazy { HomeAdapter(listOf()) }
+    private val moviesRecyclerViewAdapter by lazy { HomeAdapter() }
     private val moviesRecyclerViewLayoutManager by lazy { LinearLayoutManager(context) }
 
 
@@ -42,6 +45,7 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
 
         setupObservables()
         setupRecyclerView()
+        setupListeners()
     }
 
     override fun onResume() {
@@ -90,6 +94,22 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
             handleCommand(it)
         })
     }
+
+    private fun setupListeners(){
+        home_fragment_recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    if(viewModel.state.value?.isLastPage == false) {
+                        viewModel.getUpcomingMovies()
+                    }
+                }
+            }
+        })
+
+        moviesRecyclerViewAdapter.setOnItemClickListener{ item, position, view ->  onItemClick(item, position, view) }
+    }
     // endregion
 
 
@@ -101,6 +121,10 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
         } else {
             progressBar.visibility = View.INVISIBLE
         }
+    }
+
+    private fun onItemClick(item: Movie, position: Int, view: View){
+
     }
     //endregion
 
@@ -127,8 +151,7 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
     }
 
     private fun handleMovies(movies: List<Movie>){
-        moviesRecyclerViewAdapter.movies = movies
-        moviesRecyclerViewAdapter.notifyDataSetChanged()
+        moviesRecyclerViewAdapter.submitList(movies)
     }
     // endregion
 

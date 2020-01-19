@@ -1,40 +1,41 @@
 package com.arctouch.codechallenge.home.presentation.ui.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arctouch.codechallenge.R
+import com.arctouch.codechallenge.base.presentation.ui.adapter.BaseListAdapter
 import com.arctouch.codechallenge.home.domain.entities.Movie
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class HomeAdapter(var movies: List<Movie>) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter : BaseListAdapter<Movie>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val movieImageUrlBuilder = MovieImageUrlBuilder()
 
-        private val movieImageUrlBuilder = MovieImageUrlBuilder()
 
-        fun bind(movie: Movie) {
-            itemView.titleTextView.text = movie.title
-            itemView.genresTextView.text = movie.genres?.joinToString(separator = ", ") { it.name }
-            itemView.releaseDateTextView.text = movie.releaseDate
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
+        ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false))
 
-            Glide.with(itemView)
-                .load(movie.posterPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
-                .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))
-                .into(itemView.posterImageView)
+
+    inner class ItemViewHolder(view: View) : BaseListAdapter.BaseViewHolder(view){
+
+        override fun bind(position: Int){
+            val movie = getItem(position)
+
+            movie?.apply {
+                view.titleTextView.text = title
+                view.genresTextView.text = genres?.joinToString(separator = ", ") { it.name }
+                view.releaseDateTextView.text = releaseDate
+
+                Glide.with(view)
+                        .load(posterPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
+                        .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))
+                        .into(view.posterImageView)
+                view.setOnClickListener { onItemClickListener?.onItemClick(this, position, view) }
+            }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun getItemCount() = movies.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(movies[position])
 }

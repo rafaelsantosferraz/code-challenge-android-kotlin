@@ -15,11 +15,32 @@ class MoviesInteractor @Inject constructor(
         private val moviesRepository: MoviesRepository
 ){
 
+    private var page: Long = 1
+    var isLastPage: Boolean = false
+
     //region Public
-    suspend fun getMoviesAsync(): Deferred<List<Movie>> = coroutineScope {
+    suspend fun getMoviesAsync(previousLoadMovies: MutableList<Movie>): Deferred<List<Movie>> = coroutineScope {
         async(Dispatchers.IO){
             val genres = moviesRepository.getGenres()
-            moviesRepository.getUpcomingMovies(genres)
+            var moviesList : MutableList<Movie>
+
+            if(previousLoadMovies.isNullOrEmpty()) {
+                page = 1
+                moviesList = moviesRepository.getUpcomingMovies(genres, page).toMutableList()
+                page++
+            }
+            else {
+                moviesList = previousLoadMovies
+                val nextPage = moviesRepository.getUpcomingMovies(genres, page)
+
+                if(nextPage.isNullOrEmpty()){
+                    isLastPage = true
+                } else {
+                    moviesList.addAll(nextPage)
+                    page++
+                }
+            }
+            moviesList
         }
     }
     //endregion

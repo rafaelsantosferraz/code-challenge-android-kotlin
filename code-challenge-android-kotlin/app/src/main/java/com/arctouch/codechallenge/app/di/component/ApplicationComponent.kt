@@ -3,6 +3,7 @@ package com.arctouch.codechallenge.app.di.component
 import android.app.Application
 import com.arctouch.codechallenge.app.App
 import com.arctouch.codechallenge.app.di.module.ActivityModule
+import com.arctouch.codechallenge.base.di.modules.BaseViewModelConcreteModule
 import com.arctouch.codechallenge.base.di.modules.BaseViewModelModule
 import com.arctouch.codechallenge.home.di.modules.HomeConcreteModule
 import com.arctouch.codechallenge.home.di.modules.HomeModule
@@ -17,6 +18,7 @@ import javax.inject.Singleton
     ActivityModule::class,
 
     BaseViewModelModule::class,
+    BaseViewModelConcreteModule::class,
 
     HomeModule::class,
     HomeConcreteModule::class
