@@ -19,10 +19,32 @@ android {
 
         multiDexEnabled true
     }
+
     buildTypes {
+
+        debug {
+            debuggable true
+            applicationIdSuffix ".debug"
+            versionNameSuffix '-DEBUG'
+            buildConfigField "String", "URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "API_KEY", "\"1f54bd990f1cdfb230adb312546d765d\""
+        }
+
+        homolog {
+            debuggable true
+            applicationIdSuffix ".homolog"
+            versionNameSuffix '-HOMOLOG'
+            buildConfigField "String", "URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "API_KEY", "\"1f54bd990f1cdfb230adb312546d765d\""
+        }
+
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "API_KEY", "\"1f54bd990f1cdfb230adb312546d765d\""
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.arctouch.codechallenge.home.presentation.network
 
+import com.arctouch.codechallenge.BuildConfig
 import com.arctouch.codechallenge.home.domain.entities.Movie
 import com.arctouch.codechallenge.home.presentation.network.models.GenreResponse
 import com.arctouch.codechallenge.home.presentation.network.models.UpcomingMoviesResponse
@@ -12,8 +13,8 @@ import retrofit2.http.Query
 interface TmdbApi {
 
     companion object {
-        const val URL = "https://api.themoviedb.org/3/"
-        const val API_KEY = "1f54bd990f1cdfb230adb312546d765d"
+        const val URL = BuildConfig.URL
+        const val API_KEY = BuildConfig.API_KEY
         const val DEFAULT_LANGUAGE = "pt-BR"
         const val DEFAULT_REGION = "BR"
     }
