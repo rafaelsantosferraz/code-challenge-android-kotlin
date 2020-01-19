@@ -19,9 +19,9 @@ class HomeViewModel @Inject constructor(
     fun getUpcomingMovies(){
         newState(currentState().copy(isLoading = true))
         addJob(launch(exceptionHandler) {
-            val movies = state.value?.movies ?: mutableListOf()
-            movies.addAll(moviesInteractor.getMoviesAsync(movies).await())
-            newState(currentState().copy(movies = movies, isLoading = false, isLastPage = moviesInteractor.isLastPage))
+            val previousLoadMovies = state.value?.movies ?: mutableListOf()
+            val movies = moviesInteractor.getMoviesAsync(previousLoadMovies).await()
+            newState(currentState().copy(movies = movies.toMutableList(), isLoading = false, isLastPage = moviesInteractor.isLastPage))
         })
     }
 

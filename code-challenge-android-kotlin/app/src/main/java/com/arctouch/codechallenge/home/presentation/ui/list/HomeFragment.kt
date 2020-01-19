@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.base.di.Injectable
 import com.arctouch.codechallenge.base.presentation.ui.BaseViewModelFragment
+import com.arctouch.codechallenge.base.presentation.ui.adapter.BaseRecyclerViewItemDecorator
 import com.arctouch.codechallenge.home.domain.entities.Movie
 import com.arctouch.codechallenge.home.presentation.ui.adapter.HomeAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -31,6 +32,7 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
 
     private val moviesRecyclerViewAdapter by lazy { HomeAdapter() }
     private val moviesRecyclerViewLayoutManager by lazy { LinearLayoutManager(context) }
+    private val moviesRecyclerViewItemDecoration by lazy { BaseRecyclerViewItemDecorator(16) }
 
 
 
@@ -67,6 +69,8 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
         home_fragment_recyclerview.apply{
             adapter = null
             layoutManager = null
+            removeItemDecoration(moviesRecyclerViewItemDecoration)
+
         }
         super.onDestroyView()
     }
@@ -83,6 +87,7 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>(), Injectable {
         home_fragment_recyclerview.apply{
             layoutManager = moviesRecyclerViewLayoutManager
             adapter = moviesRecyclerViewAdapter
+            addItemDecoration(moviesRecyclerViewItemDecoration)
         }
     }
 

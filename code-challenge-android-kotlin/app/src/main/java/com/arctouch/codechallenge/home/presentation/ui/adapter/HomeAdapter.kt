@@ -16,8 +16,22 @@ class HomeAdapter : BaseListAdapter<Movie>() {
     private val movieImageUrlBuilder = MovieImageUrlBuilder()
 
 
+    private val LEFT_TYPE  = 0
+    private val RIGHT_TYPE = 1
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
-        ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false))
+            when(viewType){
+                LEFT_TYPE ->
+                    ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false))
+                else ->
+                    ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.movie_item_right, parent, false))
+            }
+
+    override fun getItemViewType(position: Int): Int =
+            when(position%2) {
+                0 -> LEFT_TYPE
+                else -> RIGHT_TYPE
+            }
 
 
     inner class ItemViewHolder(view: View) : BaseListAdapter.BaseViewHolder(view){
